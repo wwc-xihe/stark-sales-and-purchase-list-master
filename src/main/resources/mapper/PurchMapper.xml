@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.stk.stk_sale.mapper.PurchMapper">
+
+    <resultMap id="BaseResultMap" type="com.stk.stk_sale.model.domain.Purch">
+            <id property="id" column="id" jdbcType="INTEGER"/>
+            <result property="purchno" column="purchno" jdbcType="VARCHAR"/>
+            <result property="contractid" column="contractId" jdbcType="VARCHAR"/>
+            <result property="goodsname" column="goodsname" jdbcType="VARCHAR"/>
+            <result property="quantity" column="quantity" jdbcType="VARCHAR"/>
+            <result property="storeStatus" column="store_status" jdbcType="VARCHAR"/>
+            <result property="offdate" column="offdate" jdbcType="VARCHAR"/>
+            <result property="buyer" column="buyer" jdbcType="VARCHAR"/>
+            <result property="goodscode" column="goodscode" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,purchno,contractId,
+        goodsname,quantity,store_status,
+        offdate,buyer,goodscode
+    </sql>
+    <select id="getSalePurch" resultType="com.stk.stk_sale.model.vo.SalePurchVo">
+        SELECT
+            s.saleno,
+            s.goodscode,
+            s.goodsname,
+            s.quantity,
+            s.field16,
+            s.offdate,
+            s.remark,
+            p.purchno,
+            p.goodscode AS code2,
+            p.goodsname AS name2,
+            p.quantity AS num2,
+            CASE
+                p.store_status
+                WHEN '0' THEN
+                    '未入库' ELSE '已入库'
+                END  as status
+        FROM
+            t_sale s
+                LEFT JOIN t_purch p ON s.saleno = p.contractId
+        WHERE
+            p.purchno IS NOT NULL and s.salestatus &lt;&gt;'2'
+          AND s.goodscode = p.goodscode
+        ORDER BY
+            s.saleno DESC
+    </select>
+    <select id="selectSalePurch" resultType="com.stk.stk_sale.model.vo.SalePurchVo">
+        SELECT
+            s.saleno,
+            s.goodscode,
+            s.goodsname,
+            s.quantity,
+            s.field16,
+            s.offdate,
+            s.remark,
+            p.purchno,
+            p.goodscode AS code2,
+            p.goodsname AS name2,
+            p.quantity AS num2,
+            CASE
+                p.store_status
+                WHEN '0' THEN
+                    '未入库'
+                when '2' then '部分入库'
+                ELSE '已入库'
+                END  as status
+        FROM
+            t_sale s
+                LEFT JOIN t_purch p ON s.saleno = p.contractId
+        WHERE
+            p.purchno IS NOT NULL and s.salestatus &lt;&gt;'2'
+          AND s.goodscode = p.goodscode and s.saleno =#{saleno} or s.goodscode =#{goodscode}
+        ORDER BY
+            s.saleno DESC
+    </select>
+</mapper>

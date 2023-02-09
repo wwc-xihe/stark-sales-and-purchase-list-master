@@ -1,0 +1,29 @@
+server:
+    port: 9100
+spring:
+    application:
+        name: stk-sale
+    datasource:
+        url: jdbc:mysql://localhost:3306/airsya?allowMultiQueries=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Shanghai&useSSL=false
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        username: root
+        password: 123456
+logging:
+    level:
+        com:
+            stk:
+                stk_sale:
+                    mapper: debug
+pagehelper:
+    auto-dialect: mysql
+    reasonable: true
+    support-methods-arguments: true
+    page-size-zero: true
+    params: count=countSql
+mybatis-plus:
+    configuration:
+        map-underscore-to-camel-case: false
+    mapper-locations: classpath:mapper/*.xml
+    type-aliases-package: com.stk.stk_sale.model.domain
+http:
+    urlPath: https://airsya.erp.tm/

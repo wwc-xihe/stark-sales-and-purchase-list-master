@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.stk.stk_sale.mapper.SaleMapper">
+
+    <resultMap id="BaseResultMap" type="com.stk.stk_sale.model.domain.Sale">
+            <id property="id" column="id" jdbcType="INTEGER"/>
+            <result property="saleno" column="saleno" jdbcType="VARCHAR"/>
+            <result property="goodsname" column="goodsname" jdbcType="VARCHAR"/>
+            <result property="quantity" column="quantity" jdbcType="VARCHAR"/>
+            <result property="saleman" column="saleman" jdbcType="VARCHAR"/>
+            <result property="offdate" column="offdate" jdbcType="VARCHAR"/>
+            <result property="remark" column="remark" jdbcType="VARCHAR"/>
+            <result property="field16" column="field16" jdbcType="VARCHAR"/>
+            <result property="goodscode" column="goodscode" jdbcType="VARCHAR"/>
+            <result property="salestatus" column="salestatus" jdbcType="VARCHAR"/>
+            <result property="field20" column="field20" jdbcType="VARCHAR"/>
+            <result property="version" column="version" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,saleno,goodsname,
+        quantity,saleman,offdate,
+        remark,field16,goodscode,
+        salestatus,field20,version
+    </sql>
+    <select id="selectSale" resultType="com.stk.stk_sale.model.domain.Sale">
+        select id,saleno,goodsname,
+               quantity,saleman,offdate,
+               remark,field16,goodscode,
+               salestatus,field20,version from t_sale where field20='1' and version='0' order by saleno desc
+    </select>
+    <select id="selectSaleByNo" resultType="com.stk.stk_sale.model.domain.Sale">
+        select id,saleno,goodsname,
+               quantity,saleman,offdate,
+               remark,field16,goodscode,
+               salestatus,field20,version from t_sale where saleno=#{saleNo} order by saleno desc
+    </select>
+</mapper>
